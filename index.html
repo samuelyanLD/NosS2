@@ -72,7 +72,6 @@
       height: 100%;
     }
     .hero-content { position: relative; z-index: 1; }
-
     .eyebrow {
       font-size: 0.65rem;
       font-weight: 500;
@@ -212,7 +211,7 @@
       color: var(--muted);
     }
 
-    /* POLAROIDS */
+    /* POLAROIDS — base */
     .polaroid-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -228,26 +227,26 @@
       transition: transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s;
       will-change: transform;
     }
-
-    /* Rotações variadas para as 20 fotos */
-    .photos-grid .polaroid:nth-child(5n+1)  { --r: -2.5deg; }
-    .photos-grid .polaroid:nth-child(5n+2)  { --r:  1.8deg; }
-    .photos-grid .polaroid:nth-child(5n+3)  { --r: -1.2deg; }
-    .photos-grid .polaroid:nth-child(5n+4)  { --r:  2.6deg; }
-    .photos-grid .polaroid:nth-child(5n+5)  { --r: -0.7deg; }
-
-    /* Rotações para a grade dos lugares (2×2) */
-    .polaroid-grid--lugares .polaroid:nth-child(1) { --r: -2.5deg; }
-    .polaroid-grid--lugares .polaroid:nth-child(2) { --r:  1.8deg; }
-    .polaroid-grid--lugares .polaroid:nth-child(3) { --r: -0.8deg; }
-    .polaroid-grid--lugares .polaroid:nth-child(4) { --r:  2.1deg; }
-
     .polaroid:hover {
       transform: rotate(0deg) scale(1.04) translateY(-4px);
       box-shadow: 0 20px 55px rgba(0,0,0,0.65);
       z-index: 2;
       position: relative;
     }
+
+    /* Rotações — fotos (ciclo de 5) */
+    .photos-grid .polaroid:nth-child(5n+1) { --r: -2.5deg; }
+    .photos-grid .polaroid:nth-child(5n+2) { --r:  1.8deg; }
+    .photos-grid .polaroid:nth-child(5n+3) { --r: -1.2deg; }
+    .photos-grid .polaroid:nth-child(5n+4) { --r:  2.6deg; }
+    .photos-grid .polaroid:nth-child(5n+5) { --r: -0.7deg; }
+
+    /* Rotações — lugares (3 itens fixos) */
+    .lugares-grid .polaroid:nth-child(1) { --r: -2.5deg; }
+    .lugares-grid .polaroid:nth-child(2) { --r:  1.8deg; }
+    .lugares-grid .polaroid:nth-child(3) { --r: -1.0deg; }
+
+    /* Imagem dentro do polaroid — fotos quadradas */
     .p-img {
       width: 100%;
       aspect-ratio: 1 / 1;
@@ -262,6 +261,13 @@
       object-fit: cover;
       display: block;
     }
+
+    /* Imagem dentro do polaroid — desenhos em portrait (3:4) */
+    .p-img--drawing {
+      aspect-ratio: 3 / 4;
+      background: #DDD8D2;
+    }
+
     .p-caption {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
@@ -271,115 +277,14 @@
       margin-top: 0.6rem;
     }
 
-    /* MESSAGE CARD */
-    .msg-card {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 3rem 3rem 2.5rem;
-      background: var(--bg-card);
-      position: relative;
-    }
-    .msg-card::before {
-      content: '\201C';
-      position: absolute;
-      top: -1.2rem;
-      left: 2rem;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 9rem;
-      color: var(--accent);
-      opacity: 0.18;
-      line-height: 1;
-      pointer-events: none;
-      user-select: none;
-    }
-    .msg-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.1rem, 2.8vw, 1.45rem);
-      font-weight: 300;
-      font-style: italic;
-      line-height: 1.9;
-      color: var(--text);
-      position: relative;
-      z-index: 1;
-      min-height: 8rem;
-      outline: none;
-      cursor: text;
-      border-radius: 4px;
-      padding: 0.25rem;
-      margin: -0.25rem;
-      transition: background 0.2s;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-    .msg-text:empty::before {
-      content: 'Escreva sua mensagem aqui...';
-      color: var(--muted);
-      pointer-events: none;
-      display: block;
-    }
-    .msg-text:focus { background: rgba(196,116,138,0.04); }
-    .msg-card:focus-within {
-      border-color: rgba(196,116,138,0.45);
-      box-shadow: 0 0 0 3px rgba(196,116,138,0.06);
-    }
-    .msg-edit-hint {
-      margin-top: 1.5rem;
-      font-size: 0.58rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-      opacity: 0.55;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: opacity 0.3s;
-      user-select: none;
-    }
-    .msg-card:focus-within .msg-edit-hint { opacity: 0; }
-    .msg-saved {
-      font-size: 0.55rem;
-      letter-spacing: 0.18em;
-      color: var(--accent);
-      text-transform: uppercase;
-      opacity: 0;
-      transition: opacity 0.4s;
-      margin-left: auto;
-    }
-    .msg-saved.show { opacity: 1; }
-    .msg-sign {
-      margin-top: 2.2rem;
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    /* LUGARES */
-    .polaroid-grid--lugares {
-      grid-template-columns: repeat(2, 1fr);
+    /* LUGARES — grade de 3 colunas centradas */
+    .lugares-grid {
+      grid-template-columns: repeat(3, 1fr);
       gap: 2rem;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
     }
-    .p-img--drawing {
-      background: #DDD8D2;
-      aspect-ratio: 3 / 4;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .p-placeholder--drawing {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.4rem;
-      color: #8A807A;
-      font-size: 0.65rem;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 400;
-      text-align: center;
-    }
-    .p-placeholder--drawing .icon { font-size: 2rem; }
 
     /* MUSIC BUTTON */
     #music-btn {
@@ -483,16 +388,12 @@
     /* RESPONSIVE */
     @media (max-width: 720px) {
       .polaroid-grid { grid-template-columns: repeat(3, 1fr); }
+      .lugares-grid  { grid-template-columns: repeat(3, 1fr); max-width: 100%; }
     }
     @media (max-width: 520px) {
-      .counter-grid { grid-template-columns: repeat(2, 1fr); }
+      .counter-grid  { grid-template-columns: repeat(2, 1fr); }
       .polaroid-grid { grid-template-columns: repeat(2, 1fr); }
-      .polaroid-grid--lugares { grid-template-columns: repeat(2, 1fr); }
-      .msg-card { padding: 2rem 1.4rem 1.8rem; }
-      .msg-card::before { font-size: 6rem; }
-    }
-    @media (max-width: 360px) {
-      .polaroid-grid { grid-template-columns: repeat(2, 1fr); }
+      .lugares-grid  { grid-template-columns: repeat(3, 1fr); }
     }
     @media (prefers-reduced-motion: reduce) {
       .reveal { transition: none; }
@@ -535,154 +436,112 @@
     </div>
   </div>
 
-  <!-- FOTOS — 20 imagens (imagem1.jpeg até imagem20.jpeg) -->
+  <!-- FOTOS -->
   <section class="section-wrap reveal">
     <p class="section-label">Nossas memórias</p>
     <p class="section-title">Momentos que nunca vou esquecer!</p>
     <div class="polaroid-grid photos-grid">
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem1.jpeg')">
-          <img src="imagem1.jpeg" alt="Foto 1" /></div>
+        <div class="p-img" style="background-image:url('imagem1.jpeg')"><img src="imagem1.jpeg" alt="Foto 1" /></div>
         <p class="p-caption">:p</p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem2.jpeg')">
-          <img src="imagem2.jpeg" alt="Foto 2" /></div>
+        <div class="p-img" style="background-image:url('imagem2.jpeg')"><img src="imagem2.jpeg" alt="Foto 2" /></div>
         <p class="p-caption"></p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem3.jpeg')">
-          <img src="imagem3.jpeg" alt="Foto 3" /></div>
+        <div class="p-img" style="background-image:url('imagem3.jpeg')"><img src="imagem3.jpeg" alt="Foto 3" /></div>
         <p class="p-caption">Você nem imagina o quanto isso significou</p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem4.jpeg')">
-          <img src="imagem4.jpeg" alt="Foto 4" /></div>
+        <div class="p-img" style="background-image:url('imagem4.jpeg')"><img src="imagem4.jpeg" alt="Foto 4" /></div>
         <p class="p-caption">Juntos ❤</p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem5.jpeg')">
-          <img src="imagem5.jpeg" alt="Foto 5" /></div>
+        <div class="p-img" style="background-image:url('imagem5.jpeg')"><img src="imagem5.jpeg" alt="Foto 5" /></div>
         <p class="p-caption">Depois de tanto esforço</p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem6.jpeg')">
-          <img src="imagem6.jpeg" alt="Foto 6" /></div>
+        <div class="p-img" style="background-image:url('imagem6.jpeg')"><img src="imagem6.jpeg" alt="Foto 6" /></div>
         <p class="p-caption"></p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem7.jpeg')">
-          <img src="imagem7.jpeg" alt="Foto 7" /></div>
+        <div class="p-img" style="background-image:url('imagem7.jpeg')"><img src="imagem7.jpeg" alt="Foto 7" /></div>
         <p class="p-caption">O dia que eu estava "mais bonito"</p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem8.jpeg')">
-          <img src="imagem8.jpeg" alt="Foto 8" /></div>
+        <div class="p-img" style="background-image:url('imagem8.jpeg')"><img src="imagem8.jpeg" alt="Foto 8" /></div>
         <p class="p-caption"></p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem9.jpeg')">
-          <img src="imagem9.jpeg" alt="Foto 9" /></div>
+        <div class="p-img" style="background-image:url('imagem9.jpeg')"><img src="imagem9.jpeg" alt="Foto 9" /></div>
         <p class="p-caption">Melhor companhia</p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem10.jpeg')">
-          <img src="imagem10.jpeg" alt="Foto 10" /></div>
+        <div class="p-img" style="background-image:url('imagem10.jpeg')"><img src="imagem10.jpeg" alt="Foto 10" /></div>
         <p class="p-caption">Momentos assim</p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem11.jpeg')">
-          <img src="imagem11.jpeg" alt="Foto 11" /></div>
+        <div class="p-img" style="background-image:url('imagem11.jpeg')"><img src="imagem11.jpeg" alt="Foto 11" /></div>
         <p class="p-caption"></p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem12.jpeg')">
-          <img src="imagem12.jpeg" alt="Foto 12" /></div>
+        <div class="p-img" style="background-image:url('imagem12.jpeg')"><img src="imagem12.jpeg" alt="Foto 12" /></div>
         <p class="p-caption"></p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem13.jpeg')">
-          <img src="imagem13.jpeg" alt="Foto 13" /></div>
+        <div class="p-img" style="background-image:url('imagem13.jpeg')"><img src="imagem13.jpeg" alt="Foto 13" /></div>
         <p class="p-caption">Nosso dia S2</p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem14.jpeg')">
-          <img src="imagem14.jpeg" alt="Foto 14" /></div>
+        <div class="p-img" style="background-image:url('imagem14.jpeg')"><img src="imagem14.jpeg" alt="Foto 14" /></div>
         <p class="p-caption"></p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem15.jpeg')">
-          <img src="imagem15.jpeg" alt="Foto 15" /></div>
+        <div class="p-img" style="background-image:url('imagem15.jpeg')"><img src="imagem15.jpeg" alt="Foto 15" /></div>
         <p class="p-caption">Junto com você</p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem16.jpeg')">
-          <img src="imagem16.jpeg" alt="Foto 16" /></div>
+        <div class="p-img" style="background-image:url('imagem16.jpeg')"><img src="imagem16.jpeg" alt="Foto 16" /></div>
         <p class="p-caption">Apoio mais noites dessa</p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem17.jpeg')">
-          <img src="imagem17.jpeg" alt="Foto 17" /></div>
+        <div class="p-img" style="background-image:url('imagem17.jpeg')"><img src="imagem17.jpeg" alt="Foto 17" /></div>
         <p class="p-caption">Te</p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem18.jpeg')">
-          <img src="imagem18.jpeg" alt="Foto 18" /></div>
+        <div class="p-img" style="background-image:url('imagem18.jpeg')"><img src="imagem18.jpeg" alt="Foto 18" /></div>
         <p class="p-caption">Amo</p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem19.jpeg')">
-          <img src="imagem19.jpeg" alt="Foto 19" /></div>
+        <div class="p-img" style="background-image:url('imagem19.jpeg')"><img src="imagem19.jpeg" alt="Foto 19" /></div>
         <p class="p-caption">Pra</p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img" style="background-image: url('imagem20.jpeg')">
-          <img src="imagem20.jpeg" alt="Foto 20" /></div>
+        <div class="p-img" style="background-image:url('imagem20.jpeg')"><img src="imagem20.jpeg" alt="Foto 20" /></div>
         <p class="p-caption">Sempre</p>
       </div>
 
-    </div>
-  </section>
-
-  <!-- MESSAGE -->
-  <section class="section-wrap reveal">
-    <p class="section-label">Do fundo do coração</p>
-    <p class="section-title">Minha mensagem pra você</p>
-    <div class="msg-card" id="msg-card">
-      <div
-        class="msg-text"
-        id="msg-text"
-        contenteditable="true"
-        spellcheck="false"
-        role="textbox"
-        aria-multiline="true"
-        aria-label="Escreva sua mensagem aqui"
-      ></div>
-      <p class="msg-sign">— Samuel Y.</p>
-      <div class="msg-edit-hint">
-        <span>✏️ Clique aqui e escreva sua mensagem</span>
-        <span class="msg-saved" id="msg-saved">✓ Salvo</span>
-      </div>
     </div>
   </section>
 
@@ -690,34 +549,25 @@
   <section class="section-wrap reveal">
     <p class="section-label">Para a gente</p>
     <p class="section-title">Lugares importantes para a gente</p>
-    <div class="polaroid-grid polaroid-grid--lugares">
+    <div class="polaroid-grid lugares-grid">
 
       <div class="polaroid">
-        <div class="p-img p-img--drawing">
-          <div class="p-placeholder--drawing">
-            <span class="icon"></span>
-            <img src="desenho1.jpeg" alt="Foto 20" /></div>
-          </div>
+        <div class="p-img p-img--drawing" style="background-image:url('desenho1.jpeg')">
+          <img src="desenho1.jpeg" alt="Desenho 1" />
         </div>
         <p class="p-caption">Nosso pontinho de conversa</p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img p-img--drawing">
-          <div class="p-placeholder--drawing">
-            <span class="icon">🎨</span>
-            <img src="desenho2.jpeg" alt="Foto 20" /></div>
-          </div>
+        <div class="p-img p-img--drawing" style="background-image:url('desenho2.jpeg')">
+          <img src="desenho2.jpeg" alt="Desenho 2" />
         </div>
         <p class="p-caption">Nosso primeiro beijo...</p>
       </div>
 
       <div class="polaroid">
-        <div class="p-img p-img--drawing">
-          <div class="p-placeholder--drawing">
-            <span class="icon">🎨</span>
-            <img src="desenho3.jpeg" alt="Foto 20" /></div>
-          </div>
+        <div class="p-img p-img--drawing" style="background-image:url('desenho3.jpeg')">
+          <img src="desenho3.jpeg" alt="Desenho 3" />
         </div>
         <p class="p-caption">O pedido S2</p>
       </div>
@@ -732,18 +582,12 @@
     <p class="footer-sub">Samuel &amp; Thalya &nbsp;·&nbsp; Desde 20 de Junho de 2025</p>
   </footer>
 
-  <!--
-    ============================================================
-    MÚSICA — Chuva de Arroz
-    ✏️ Baixe o MP3 da música, renomeie para "chuva-de-arroz.mp3"
-       e coloque na mesma pasta que este arquivo HTML.
-    ============================================================
-  -->
-  <audio id="bg-music" loop preload="none">
+  <!-- MÚSICA — coloque "chuva-de-arroz.mp3" na mesma pasta -->
+  <audio id="bg-music" loop preload="auto">
     <source src="chuva-de-arroz.mp3" type="audio/mpeg" />
   </audio>
-  <button id="music-btn" aria-label="Tocar música" title="Chuva de Arroz">♪</button>
-  <div class="music-tooltip">Tocar música</div>
+  <button id="music-btn" aria-label="Pausar música" title="Chuva de Arroz">‖</button>
+  <div class="music-tooltip">Pausar música</div>
 
   <script>
     /* STARFIELD */
@@ -799,47 +643,49 @@
     tick();
     setInterval(tick, 1000);
 
-    /* EDITABLE MESSAGE + AUTOSAVE */
-    const msgEl    = document.getElementById('msg-text');
-    const savedEl  = document.getElementById('msg-saved');
-    const STORE_KEY = 'samuel-thalya-msg';
-    let saveTimer;
-
-    const stored = localStorage.getItem(STORE_KEY);
-    if (stored) msgEl.innerHTML = stored;
-
-    function showSaved() {
-      savedEl.classList.add('show');
-      clearTimeout(saveTimer);
-      saveTimer = setTimeout(() => savedEl.classList.remove('show'), 2000);
-    }
-    msgEl.addEventListener('input', () => {
-      localStorage.setItem(STORE_KEY, msgEl.innerHTML);
-      showSaved();
-    });
-    msgEl.addEventListener('paste', e => {
-      e.preventDefault();
-      const text = e.clipboardData.getData('text/plain');
-      document.execCommand('insertText', false, text);
-    });
-
-    /* MUSIC PLAYER */
+    /* MUSIC — autoplay ao abrir, com fallback no primeiro toque */
     const audio    = document.getElementById('bg-music');
     const musicBtn = document.getElementById('music-btn');
+    const tooltip  = document.querySelector('.music-tooltip');
 
-    musicBtn.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.play().catch(() => {
-          musicBtn.title = 'Arquivo não encontrado. Coloque "chuva-de-arroz.mp3" na pasta.';
-        });
+    function setPlaying(playing) {
+      if (playing) {
         musicBtn.textContent = '‖';
         musicBtn.setAttribute('aria-label', 'Pausar música');
         musicBtn.classList.add('playing');
+        tooltip.textContent = 'Pausar música';
       } else {
-        audio.pause();
         musicBtn.textContent = '♪';
         musicBtn.setAttribute('aria-label', 'Tocar música');
         musicBtn.classList.remove('playing');
+        tooltip.textContent = 'Tocar música';
+      }
+    }
+
+    // Tenta tocar imediatamente
+    audio.play()
+      .then(() => setPlaying(true))
+      .catch(() => {
+        // Navegador bloqueou — aguarda o primeiro toque do usuário
+        setPlaying(false);
+        const startOnInteraction = () => {
+          audio.play().then(() => setPlaying(true)).catch(() => {});
+          document.removeEventListener('click',      startOnInteraction);
+          document.removeEventListener('touchstart', startOnInteraction);
+          document.removeEventListener('keydown',    startOnInteraction);
+        };
+        document.addEventListener('click',      startOnInteraction);
+        document.addEventListener('touchstart', startOnInteraction);
+        document.addEventListener('keydown',    startOnInteraction);
+      });
+
+    musicBtn.addEventListener('click', e => {
+      e.stopPropagation(); // não dispara startOnInteraction
+      if (audio.paused) {
+        audio.play().then(() => setPlaying(true)).catch(() => {});
+      } else {
+        audio.pause();
+        setPlaying(false);
       }
     });
 
